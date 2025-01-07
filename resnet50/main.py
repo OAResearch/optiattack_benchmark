@@ -8,20 +8,17 @@ import tensorflow as tf
 from keras.applications.resnet import preprocess_input, decode_predictions, ResNet50
 from optiattack_client import collect_info
 
-# Base64 string'i çöz
 def decode_base64_image(base64_string):
     image_data = base64.b64decode(base64_string)
     image = Image.open(io.BytesIO(image_data))
     return image
 
-# Görseli yükle ve ön işle
 def preprocess_image(image):
-    # image = image.resize((224, 224))  # ResNet50 için uygun boyut
-    image_array = np.array(image)  # NumPy array'e dönüştür
-    if image_array.shape[-1] == 4:  # RGBA ise RGB'ye dönüştür
+    image_array = np.array(image)
+    if image_array.shape[-1] == 4:
         image_array = image_array[..., :3]
-    image_array = np.expand_dims(image_array, axis=0)  # Batch boyutunu ekle
-    image_array = preprocess_input(image_array)  # ResNet50 preprocess işlemi
+    image_array = np.expand_dims(image_array, axis=0)
+    image_array = preprocess_input(image_array)
     return image_array
 
 NET_X = 100
