@@ -1,5 +1,4 @@
 import os.path
-
 import onnxruntime as ort
 import numpy as np
 import requests
@@ -11,13 +10,11 @@ def softmax(x, axis):
     e_x = np.exp(x - np.max(x))
     return e_x / e_x.sum(axis=axis)
 
-model_url = "https://github.com/onnx/models/raw/refs/heads/main/validated/vision/classification/resnet/model/resnet50-v2-7.onnx"
+model_url = "https://media.githubusercontent.com/media/onnx/models/refs/heads/main/validated/vision/classification/shufflenet/model/shufflenet-v2-10.onnx"
 model_path = "./model.onnx"
 
 if not os.path.exists(model_path):
     download_file(model_url, model_path)
-
-
 
 # classes
 url = "https://raw.githubusercontent.com/pytorch/hub/master/imagenet_classes.txt"
