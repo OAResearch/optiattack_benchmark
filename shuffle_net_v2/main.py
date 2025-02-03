@@ -9,7 +9,7 @@ def softmax(x, axis):
     """Compute softmax values for each sets of scores in x."""
     e_x = np.exp(x - np.max(x))
     return e_x / e_x.sum(axis=axis)
-https://github.com/onnx/models/raw/refs/heads/main/validated/vision/classification/resnet/model/resnet101-v1-7.onnx?download=
+
 model_url = "https://media.githubusercontent.com/media/onnx/models/refs/heads/main/validated/vision/classification/shufflenet/model/shufflenet-v2-10.onnx"
 model_path = "./model.onnx"
 
