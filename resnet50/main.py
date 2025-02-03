@@ -1,66 +1,55 @@
-import base64
-import io
-import os
+import os.path
 
+import onnxruntime as ort
 import numpy as np
-from PIL import Image
-import tensorflow as tf
-from keras.applications.resnet import preprocess_input, decode_predictions, ResNet50
+import requests
 from optiattack_client import collect_info
+from utils import download_file
 
-def decode_base64_image(base64_string):
-    image_data = base64.b64decode(base64_string)
-    image = Image.open(io.BytesIO(image_data))
-    return image
+def softmax(x, axis):
+    """Compute softmax values for each sets of scores in x."""
+    e_x = np.exp(x - np.max(x))
+    return e_x / e_x.sum(axis=axis)
+
+model_url = "https://github.com/onnx/models/raw/refs/heads/main/validated/vision/classification/resnet/model/resnet50-v2-7.onnx"
+model_path = "./model.onnx"
+
+if not os.path.exists(model_path):
+    download_file(model_url, model_path)
+
+
+
+# classes
+url = "https://raw.githubusercontent.com/pytorch/hub/master/imagenet_classes.txt"
+classes = [line.strip() for line in requests.get(url).text.split("\n") if line]
 
 def preprocess_image(image):
-    image_array = np.array(image)
-    if image_array.shape[-1] == 4:
-        image_array = image_array[..., :3]
-    image_array = np.expand_dims(image_array, axis=0)
-    image_array = preprocess_input(image_array)
-    return image_array
+    image = np.reshape(image, (224, 224, 3))
+    # Normalization
+    image = image.astype(np.float32) / 255.0
+    mean = np.array([0.485, 0.456, 0.406], dtype=np.float32)
+    std = np.array([0.229, 0.224, 0.225], dtype=np.float32)
+    image = (image - mean) / std
 
-NET_X = 100
-NET_Y = 100
+    image = np.transpose(image, (2, 0, 1))  # HWC -> CHW
+    image = np.expand_dims(image, axis=0)  # (C, H, W) -> (1, C, H, W)
 
+    return image
+
+session = ort.InferenceSession(model_path)
+input_name = session.get_inputs()[0].name
 @collect_info()
-def resnet50_main(data):
-    image_array = np.array(data, dtype=np.uint8)
-    processed_image = preprocess_image(image_array)
-
-    predictions = model.predict(processed_image)
-    decoded_predictions = decode_predictions(predictions, top=10)
-
+def run_inference(data):
+    input_tensor = preprocess_image(data)
+    # inference
+    outputs = session.run(None, {input_name: input_tensor})
+    output = outputs[0]
+    output = softmax(output, 1)
+    indices = np.argsort(output, axis=1)[:,-5:]
     json_results = []
-    for imagenet_id, label, score in decoded_predictions[0]:
-        json_results.append({"label": label, "score": float(score)})
-
+    for i in indices[0][::-1]:
+        json_results.append({"label": classes[i], "score": float(output[0, i])})
     return {"predictions": json_results}
 
-os.environ['TF_GPU_ALLOCATOR'] = 'cuda_malloc_async'
-os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'
-gpus = tf.config.experimental.list_physical_devices("GPU")
-
-for gpu in gpus:
-    try:
-        tf.config.experimental.set_virtual_device_configuration(
-            gpu,
-            [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=8192)])
-    except RuntimeError as e:
-        print(e)
-
-logical_gpus = tf.config.experimental.list_logical_devices('GPU')
-print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
-
-model = ResNet50(
-    include_top=True,
-    weights='imagenet',
-    input_tensor=None,
-    input_shape=None,
-    pooling=None,
-    classes=1000,
-    classifier_activation='softmax'
-)
 while True:
     pass

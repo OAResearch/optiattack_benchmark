@@ -2,10 +2,11 @@
 __pycache__/
 *.py[cod]
 *$py.class
+git checkout master
 
 # C extensions
 *.so
-
+*.onnx
 # Distribution / packaging
 .Python
 build/
