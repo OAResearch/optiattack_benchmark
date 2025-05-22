@@ -39,7 +39,7 @@ def preprocess_image(image):
 session = ort.InferenceSession(model_path)
 input_name = session.get_inputs()[0].name
 @collect_info()
-def run_inference(data):
+def run_inference(data, additional_data=None):
     input_tensor = preprocess_image(data)
     # inference
     outputs = session.run(None, {input_name: input_tensor})
