@@ -36,23 +36,13 @@ def preprocess_image(image):
 session = ort.InferenceSession(model_path)
 input_name = session.get_inputs()[0].name
 @collect_info()
-def run_inference(data, additional_data=None):
+def run_inference(data):
     input_tensor = preprocess_image(data)
     # inference
     outputs = session.run(None, {input_name: input_tensor})
     output = outputs[0]
     output = softmax(output, 1)
     indices = np.argsort(output, axis=1)[:,-5:]
-    if additional_data is not None:
-        target_class = additional_data.get("target")
-        if target_class is not None:
-            if target_class not in classes:
-                raise ValueError(f"Target class '{target_class}' is not in the class list.")
-            target_index = classes.index(target_class)
-            found_in_top5 = target_index in indices[0]
-            if not found_in_top5:
-                indices[0][0] = target_index
-
     json_results = []
     for i in indices[0][::-1]:
         json_results.append({"label": classes[i], "score": float(output[0, i])})
