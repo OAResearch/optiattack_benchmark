@@ -1,10 +1,15 @@
 import os.path
+import sys
 
+import constants
 import onnxruntime as ort
 import numpy as np
 import requests
 from optiattack_client import collect_info
 from utils import download_file
+
+HOST = str(sys.argv[1]) if len(sys.argv) > 1 else "localhost"
+PORT = int(sys.argv[2]) if len(sys.argv) > 2 else constants.DEFAULT_CONTROLLER_PORT
 
 def softmax(x, axis):
     """Compute softmax values for each sets of scores in x."""
@@ -38,7 +43,7 @@ def preprocess_image(image):
 
 session = ort.InferenceSession(model_path)
 input_name = session.get_inputs()[0].name
-@collect_info()
+@collect_info(HOST, PORT)
 def run_inference(data, additional_data=None):
     input_tensor = preprocess_image(data)
     # inference
