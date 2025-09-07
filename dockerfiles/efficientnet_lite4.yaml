@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  efficientnet_lite4:
+    build:
+      context: ..
+      dockerfile: dockerfiles/efficientnet_lite4.dockerfiles
+    ports:
+      - "${PORT:-38000}:38000"

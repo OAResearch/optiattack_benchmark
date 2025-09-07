@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  resnet50:
+    build:
+      context: ..
+      dockerfile: dockerfiles/resnet50.dockerfiles
+    ports:
+      - "${PORT:-38000}:38000"

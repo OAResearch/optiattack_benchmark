@@ -1,0 +1,11 @@
+FROM python:3.11-slim
+
+COPY ./efficientnet_lite4/main.py .
+COPY ./utils.py .
+COPY requirements.txt .
+
+RUN pip install -r requirements.txt
+
+EXPOSE 38000
+
+CMD ["python", "main.py", "0.0.0.0", "38000"]

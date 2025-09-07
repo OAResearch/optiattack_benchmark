@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  vgg19:
+    build:
+      context: ..
+      dockerfile: dockerfiles/vgg19.dockerfiles
+    ports:
+      - "${PORT:-38000}:38000"

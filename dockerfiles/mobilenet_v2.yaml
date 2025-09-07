@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  mobilenet_v2:
+    build:
+      context: ..
+      dockerfile: dockerfiles/mobilenet_v2.dockerfiles
+    ports:
+      - "${PORT:-38000}:38000"
