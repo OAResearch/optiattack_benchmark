@@ -6,7 +6,13 @@ import onnxruntime as ort
 import numpy as np
 import requests
 from optiattack_client import collect_info
-from utils import download_file
+
+try:
+    from utils import download_file
+except ImportError:
+    from .utils import download_file
+
+
 HOST = str(sys.argv[1]) if len(sys.argv) > 1 else "localhost"
 PORT = int(sys.argv[2]) if len(sys.argv) > 2 else constants.DEFAULT_CONTROLLER_PORT
 
