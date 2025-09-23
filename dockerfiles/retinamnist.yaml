@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  retinamnist:
+    build:
+      context: ..
+      dockerfile: dockerfiles/retinamnist.dockerfiles
+    ports:
+      - "${PORT:-38000}:38000"

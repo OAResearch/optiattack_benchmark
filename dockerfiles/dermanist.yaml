@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  dermamnist:
+    build:
+      context: ..
+      dockerfile: dockerfiles/dermamnist.dockerfiles
+    ports:
+      - "${PORT:-38000}:38000"

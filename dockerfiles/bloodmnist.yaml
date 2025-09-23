@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  bloodmnist:
+    build:
+      context: ..
+      dockerfile: dockerfiles/bloodmnist.dockerfiles
+    ports:
+      - "${PORT:-38000}:38000"
