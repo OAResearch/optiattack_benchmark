@@ -33,15 +33,21 @@ classes = [ "choroidal neovascularization",
             "normal"]
 
 def preprocess_image(image):
-    image = np.reshape(image, (224, 224, 3))
-    # Normalization
-    image = image.astype(np.float32) / 255.0
-    mean = np.array([0.485, 0.456, 0.406], dtype=np.float32)
-    std = np.array([0.229, 0.224, 0.225], dtype=np.float32)
-    image = (image - mean) / std
+    # Eğer 1D array (150528,) geldiyse önce (224,224,3)'e reshape et
+    if image.ndim == 1 and image.size == 224*224*3:
+        image = image.reshape(224, 224, 3)
 
-    image = np.transpose(image, (2, 0, 1))  # HWC -> CHW
-    image = np.expand_dims(image, axis=0)  # (C, H, W) -> (1, C, H, W)
+    # Eğer RGB ise → grayscale
+    if image.ndim == 3 and image.shape[2] == 3:
+        image = np.dot(image[...,:3], [0.2989, 0.5870, 0.1140])  # (224,224)
+
+    # Normalizasyon
+    image = image.astype(np.float32) / 255.0
+    image = (image - 0.5) / 0.5
+
+    # (H,W) → (1,1,H,W)
+    image = np.expand_dims(image, axis=0)  # (1,224,224)
+    image = np.expand_dims(image, axis=0)  # (1,1,224,224)
 
     return image
 
