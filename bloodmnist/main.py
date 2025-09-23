@@ -27,14 +27,16 @@ if not os.path.exists(model_path):
     download_file(model_url, model_path)
 
 # classes
-classes = [ "basophil",
-            "eosinophil",
-            "erythroblast",
-            "immature granulocytes(myelocytes, metamyelocytes and promyelocytes)",
-            "lymphocyte",
-            "monocyte",
-            "neutrophil",
-            "platelet",]
+classes = [
+    "Baso",     # basophil
+    "Eos",      # eosinophil
+    "Eryth",    # erythroblast
+    "ImmGran",  # immature granulocytes (myelocytes, metamyelocytes, promyelocytes)
+    "Lymph",    # lymphocyte
+    "Mono",     # monocyte
+    "Neut",     # neutrophil
+    "Plt"       # platelet
+]
 
 def preprocess_image(image):
     image = np.reshape(image, (224, 224, 3))

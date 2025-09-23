@@ -27,13 +27,15 @@ if not os.path.exists(model_path):
     download_file(model_url, model_path)
 
 # classes
-classes = [ "actinic keratoses and intraepithelial carcinoma",
-            "basal cell carcinoma",
-            "benign keratosis-like lesions",
-            "dermatofibroma",
-            "melanoma",
-            "melanocytic nevi",
-            "vascular lesions",]
+classes = [
+    "AKIEC",  # actinic keratoses & intraepithelial carcinoma
+    "BCC",    # basal cell carcinoma
+    "BKL",    # benign keratosis-like lesions
+    "DF",     # dermatofibroma
+    "MEL",    # melanoma
+    "NV",     # melanocytic nevi
+    "VASC"    # vascular lesions
+]
 
 def preprocess_image(image):
     image = np.reshape(image, (224, 224, 3))

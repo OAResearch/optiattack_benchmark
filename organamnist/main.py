@@ -27,17 +27,19 @@ if not os.path.exists(model_path):
     download_file(model_url, model_path)
 
 # classes
-classes = [ "bladder",
-            "femur-left",
-            "femur-right",
-            "heart",
-            "kidney-left",
-            "kidney-right",
-            "liver",
-            "lung-left",
-            "lung-right",
-            "pancreas",
-            "spleen",]
+classes = [
+    "Blad",   # bladder
+    "FemL",   # femur-left
+    "FemR",   # femur-right
+    "Heart",  # heart
+    "KidL",   # kidney-left
+    "KidR",   # kidney-right
+    "Liver",  # liver
+    "LungL",  # lung-left
+    "LungR",  # lung-right
+    "Panc",   # pancreas
+    "Spl"     # spleen
+]
 
 def preprocess_image(image):
     image = np.reshape(image, (224, 224, 3))
