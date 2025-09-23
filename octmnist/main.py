@@ -27,10 +27,12 @@ if not os.path.exists(model_path):
     download_file(model_url, model_path)
 
 # classes
-classes = [ "choroidal neovascularization",
-            "diabetic macular edema",
-            "drusen",
-            "normal"]
+classes = [
+    "CNV",     # choroidal neovascularization
+    "DME",     # diabetic macular edema
+    "Drusen",  # drusen
+    "Normal"   # normal
+]
 
 def preprocess_image(image):
     image = np.reshape(image, (224, 224, 3))
