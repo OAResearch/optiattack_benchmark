@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  organamnist:
+    build:
+      context: ..
+      dockerfile: dockerfiles/organamnist.dockerfiles
+    ports:
+      - "${PORT:-38000}:38000"
