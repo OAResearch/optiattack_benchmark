@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  antispoofing_bin_1.5_128:
+    build:
+      context: ..
+      dockerfile: dockerfiles/antispoofing_bin_1.5_128.dockerfiles
+    ports:
+      - "${PORT:-38000}:38000"
