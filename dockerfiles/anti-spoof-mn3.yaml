@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  anti-spoof-mn3:
+    build:
+      context: ..
+      dockerfile: dockerfiles/anti-spoof-mn3.dockerfiles
+    ports:
+      - "${PORT:-38000}:38000"
