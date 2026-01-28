@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  dgaus_fas:
+    build:
+      context: ..
+      dockerfile: dockerfiles/dgaus_fas.dockerfiles
+    ports:
+      - "${PORT:-38000}:38000"
