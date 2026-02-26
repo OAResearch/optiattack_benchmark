@@ -13,6 +13,10 @@ The project includes benchmark datasets for several popular deep learning models
 - MobileNetV2
 - ShuffleNetV2
 - EfficientNet-Lite4
+- LFAS (anti-spoof-mn3)
+- MiniFASNet (antispoofing_bin_128)
+- MiniFASNet-1.5 (antispoofing_bin_1.5_128)
+- DGUA-FAS
 
 ## Requirements
 
